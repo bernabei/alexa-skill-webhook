@@ -1,0 +1,42 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "vetrina intelligente",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "OpenWebPageIntent",
+                    "slots": [
+                        {
+                            "name": "urlWeb",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "di aprire {urlWeb}",
+                        "aprire {urlWeb}",
+                        "apri {urlWeb}",
+                        "apri la pagina web {urlWeb}",
+                        "aprire la pagina web {urlWeb}"
+                    ]
+                }
+            ],
+            "types": []
+        }
+    }
+}

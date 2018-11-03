@@ -12,7 +12,7 @@ const LaunchHandler = {
   handle(handlerInput) {
 
     return handlerInput.responseBuilder
-      .speak('Benvenuto nella vetrina intelligente. Chiedimi cosa visualizzare.')
+      .speak('Benvenuto nella vetrina digitale. Chiedimi cosa visualizzare.')
       .reprompt('Cosa posso fare per te?')
       .getResponse();
   },
@@ -30,6 +30,25 @@ const OpenWebPageHandler = {
     await WebHookClient.openWebPage(url);
     
     const speechOutput = 'OK!'; 
+
+    return handlerInput.responseBuilder
+      .speak(speechOutput)
+      .getResponse();
+  },
+};
+
+const OpenBookmarkHandler = {
+  canHandle(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    return request.type === 'IntentRequest' && request.intent.name === 'OpenBookmarkIntent';
+  },
+  async handle(handlerInput) {
+    
+    let bookmark = handlerInput.requestEnvelope.request.intent.slots.bookmark.value;
+    
+    let result = await WebHookClient.openBookmark(bookmark);
+    
+    const speechOutput = result ? 'OK!' : 'Mi dispiace, Non riesco a capire.';
 
     return handlerInput.responseBuilder
       .speak(speechOutput)
@@ -97,6 +116,7 @@ exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchHandler,
     OpenWebPageHandler,
+    OpenBookmarkHandler,
     HelpHandler,
     ExitHandler,
     SessionEndedRequestHandler

@@ -1,0 +1,25 @@
+[
+    {
+        "bookmark": "gugol",
+        "payload": {
+            "Content": "http://www.google.com",
+            "ContentType": "ShellExecute",
+            "Groups": "web"
+        }
+    },
+    {
+        "bookmark": "iutiub",
+        "payload": {
+            "Content": "http://www.youtube.com",
+            "ContentType": "ShellExecute",
+            "Groups": "web,vetrine"
+        }
+    },
+    {
+        "bookmark": "blocco note",
+        "payload": {
+            "Content": "notepad.exe",
+            "ContentType": "ShellExecute"
+        }
+    }
+]

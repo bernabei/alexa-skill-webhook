@@ -1,7 +1,7 @@
 {
     "interactionModel": {
         "languageModel": {
-            "invocationName": "vetrina intelligente",
+            "invocationName": "vetrina digitale",
             "intents": [
                 {
                     "name": "AMAZON.CancelIntent",
@@ -32,7 +32,34 @@
                         "aprire {urlWeb}",
                         "apri {urlWeb}",
                         "apri la pagina web {urlWeb}",
-                        "aprire la pagina web {urlWeb}"
+                        "aprire la pagina web {urlWeb}",
+                        "apri la pagina {urlWeb}",
+                        "aprire la pagina {urlWeb}",
+                        "apri il sito {urlWeb}",
+                        "aprire il sito {urlWeb}",
+                        "naviga su {urlWeb}",
+                        "navigare su {urlWeb}"
+                    ]
+                },
+                {
+                    "name": "OpenBookmarkIntent",
+                    "slots": [
+                        {
+                            "name": "bookmark",
+                            "type": "AMAZON.SearchQuery"
+                        }
+                    ],
+                    "samples": [
+                        "apri {bookmark} tra i miei preferiti",
+                        "aprire {bookmark} tra i miei preferiti",
+                        "apri {bookmark} dai preferiti",
+                        "aprire {bookmark} dai preferiti",
+                        "apri dai preferiti {bookmark}",
+                        "aprire dai preferiti {bookmark}",
+                        "caricare il preferito {bookmark}",
+                        "aprire il preferito {bookmark}",
+                        "carica dai preferiti {bookmark}",
+                        "carica {bookmark} dai preferiti"
                     ]
                 }
             ],

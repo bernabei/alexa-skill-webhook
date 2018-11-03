@@ -3,23 +3,28 @@ const urlMappings = {
     gazzetta: "http://www.gazzetta.it"
 };
 
-const gatewayUrl = 'insert_public_gateway_url';
+const gatewayUrl = 'webhookgateway.azurewebsites.net';//'insert_public_gateway_url';
 const gatewayPath = '/api/webhook/pushpayload';
+const bookmarksUrl = 'github.com';
+const bookmarksPath = '/bernabei/alexa-skill-webhook/raw/master/skill/bookmarks.json';
 
 class WebHookClient {
     
-    async requestHttps (method, body) {
+    async requestHttps (urlHost, urlPath, method, body) {
         const https = require('https');
         
         var options = {
-            hostname: gatewayUrl,
+            hostname: urlHost,
             port: 443,
-            path: gatewayPath,
+            path: urlPath,
             method: method,
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
         };
+
+        console.log(JSON.stringify(options));
         
         return new Promise(function(resolve, reject) {
             var req = https.request(options, function(res) {
@@ -54,26 +59,43 @@ class WebHookClient {
                 req.write(json);
             }
             req.end();
-        });  
+        });
     };
     
-    async postHttps (body) {
-        return await this.requestHttps('POST', body);
+    async postActionToGateway (body) {
+        return await this.requestHttps(gatewayUrl, gatewayPath, 'POST', body);
     };
+
+    async getBookmarks () {
+        return await this.requestHttps(bookmarksUrl, bookmarksPath, 'GET');
+    };
+
+    parseUrl(url) {
+
+        let parsedUrl = decodeURIComponent(url.toLowerCase()).trim();
+
+        let parts = parsedUrl.split(' ');
+        if(parts && parts.length > 0) {
+            parsedUrl = parts.join('.');
+        }
+
+        if(urlMappings[parsedUrl]) {
+            
+            parsedUrl = urlMappings[parsedUrl];
+        }
+
+        if(!parsedUrl.startsWith("http://") && !parsedUrl.startsWith("https://")) {
+            parsedUrl = "http://" + parsedUrl;
+        }
+
+        return parsedUrl;
+    }
 
     async openWebPage (url, groups) {
         
-        if(url) {
-            url = url.toLowerCase();
-            url = decodeURIComponent(url).trim();
+        if(url) {           
             
-            if(urlMappings[url]) {
-                url = urlMappings[url];
-            }
-            
-            if(!url.startsWith("http://")) {
-                url = "http://" + url;
-            }            
+            url = this.parseUrl(url);
         
             let body = {
                 "ContentType": "ShellExecute",
@@ -83,8 +105,28 @@ class WebHookClient {
                 body.Groups = groups.join(',');
             }
             
-            await this.postHttps(body);
+            await this.postActionToGateway(body);
         }
+    };
+
+    async openBookmark (bookmark, groups) {
+        
+        if(bookmark) {
+            let bookmarks = await this.getBookmarks();
+
+            if(bookmarks && bookmarks.length > 0) {
+                let bookmarkAction = bookmarks.find(b => b.bookmark === bookmark.toLowerCase());
+                if(bookmarkAction && bookmarkAction.payload) {
+                    if(groups && groups.length > 0) {
+                        bookmarkAction.payload.Groups = groups.join(',');
+                    }
+                    await this.postActionToGateway(bookmarkAction.payload);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     };
 };
 

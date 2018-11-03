@@ -3,10 +3,10 @@ const urlMappings = {
     gazzetta: "http://www.gazzetta.it"
 };
 
-const gatewayUrl = 'webhookgateway.azurewebsites.net';//'insert_public_gateway_url';
+const gatewayUrl = 'insert_public_gateway_url';
 const gatewayPath = '/api/webhook/pushpayload';
-const bookmarksUrl = 'github.com';
-const bookmarksPath = '/bernabei/alexa-skill-webhook/raw/master/skill/bookmarks.json';
+const bookmarksUrl = 'insert_public_bookmarks_url';
+const bookmarksPath = '/bookmarks.json';
 
 class WebHookClient {
     
